@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ChatRecordItem: typeof import('./src/components/ChatRecordItem.vue')['default']
     Icon: typeof import('./src/components/Icon.vue')['default']
     Loading: typeof import('./src/components/Loading.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -16,7 +17,8 @@ declare module 'vue' {
     VarCell: typeof import('@varlet/ui')['_CellComponent']
     VarDivider: typeof import('@varlet/ui')['_DividerComponent']
     VarIcon: typeof import('@varlet/ui')['_IconComponent']
-    VarLink: typeof import('@varlet/ui')['_LinkComponent']
+    VarInput: typeof import('@varlet/ui')['_InputComponent']
     VarMenu: typeof import('@varlet/ui')['_MenuComponent']
+    VarPaper: typeof import('@varlet/ui')['_PaperComponent']
   }
 }

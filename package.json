@@ -22,7 +22,8 @@
     "graphql-tag": "^2.12.6",
     "universal-cookie": "^4.0.4",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue-virtual-scroller": "^2.0.0-beta.8"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
