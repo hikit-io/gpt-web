@@ -11,6 +11,7 @@ import {createClient} from "graphql-ws";
 import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
 import {getMainDefinition} from "@apollo/client/utilities";
 import {onError} from "@apollo/client/link/error";
+import {Snackbar} from "@varlet/ui";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,17 +30,17 @@ const errorLink = onError(({graphQLErrors, networkError, response}) => {
                 console.log(
                     `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Source: ${extension.error.source}`
                 )
+                if (extension.code == 2) {
+                    Snackbar.error({
+                        content: extension.error.source,
+                        onClose:()=>{
+                            console.log('jump to login')
+                        }
+                    })
+                }
             }
         );
     if (networkError) console.log(`[Network error]: ${networkError}`);
-    if (response?.errors){
-        response.errors.forEach(({message,locations,path,extensions})=>{
-            const extension = extensions as { code: number, error: { kind: number, source: string } }
-            console.log(
-                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Source: ${extension.error.source}`
-            )
-        })
-    }
 });
 
 
