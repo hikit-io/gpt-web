@@ -4,12 +4,13 @@ import App from './App.vue'
 import {createRouter, createWebHistory} from "vue-router";
 import '@varlet/touch-emulator'
 import {ApolloClients, DefaultApolloClient} from "@vue/apollo-composable";
-import {ApolloClient, createHttpLink, InMemoryCache, split} from "@apollo/client/core";
+import {ApolloClient, createHttpLink, from, InMemoryCache, split} from "@apollo/client/core";
 import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import {createClient} from "graphql-ws";
 import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
 import {getMainDefinition} from "@apollo/client/utilities";
+import {onError} from "@apollo/client/link/error";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -20,6 +21,17 @@ const router = createRouter({
         }
     ],
 })
+
+const errorLink = onError(({graphQLErrors, networkError, response}) => {
+    if (graphQLErrors)
+        graphQLErrors.forEach(({message, locations, path}) =>
+            console.log(
+                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+            )
+        );
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 
 const httpLink = createHttpLink({
     uri: 'https://api.hikit.io/gpt/',
@@ -32,18 +44,21 @@ const wsLink = new GraphQLWsLink(
     })
 );
 
-const link = split(
-    // split based on operation type
-    ({query}) => {
-        const definition = getMainDefinition(query)
-        return (
-            definition.kind === "OperationDefinition" &&
-            definition.operation === "subscription"
-        )
-    },
-    wsLink,
-    httpLink
-)
+const link = from([
+    errorLink,
+    split(
+        // split based on operation type
+        ({query}) => {
+            const definition = getMainDefinition(query)
+            return (
+                definition.kind === "OperationDefinition" &&
+                definition.operation === "subscription"
+            )
+        },
+        wsLink,
+        httpLink
+    )
+])
 
 // Cache implementation
 const cache = new InMemoryCache()
@@ -54,15 +69,19 @@ const gptClient = new ApolloClient({
     cache,
 })
 
-const authLink = createHttpLink({
-    uri: 'https://api.hikit.io/auth/',
-    credentials: 'include'
-})
+const authLink = from([
+    errorLink,
+    createHttpLink({
+        uri: 'https://api.hikit.io/auth/',
+        credentials: 'include'
+    })
+])
 
 const authClient = new ApolloClient({
     link: authLink,
     cache,
 })
+
 
 createApp(App)
     .use(router)

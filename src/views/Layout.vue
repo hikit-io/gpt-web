@@ -24,7 +24,7 @@ const {load, onResult, onError} = useGetNameLazyQuery({
 })
 
 onResult(param => {
-  if (param.data.profile) {
+  if (param.data.profile.name) {
     appBarContext.toggleRight(true)
   }
 })
@@ -32,7 +32,7 @@ onResult(param => {
 onError(param => {
   console.log(`error:${param.message}`)
   token.del()
-  window.location.href = `https://auth.hikit.io/?from=https://gpt.hikit.io`
+  // window.location.href = `https://auth.hikit.io/?from=https://gpt.hikit.io`
 })
 
 
