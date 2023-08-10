@@ -6,8 +6,6 @@ import '@varlet/touch-emulator'
 import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
-import "@varlet/ui/es/snackbar/snackbar.css"
-
 import GraphQL from './graphql'
 
 const router = createRouter({

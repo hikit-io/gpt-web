@@ -20,6 +20,7 @@ const errorLink = onError(({graphQLErrors, networkError, response}) => {
                         type: 'error',
                         content: extension.error.source,
                         onClose: () => {
+                            console.log("jump")
                             window.location.href = `https://auth.hikit.io/?from=https://gpt.hikit.io`
                         }
                     })
@@ -67,7 +68,7 @@ const gptClient = new ApolloClient({
 })
 
 const authLink = from([
-    // errorLink,
+    errorLink,
     createHttpLink({
         uri: 'https://api.hikit.io/auth/',
         credentials: 'include',
