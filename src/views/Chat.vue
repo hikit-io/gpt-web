@@ -3,6 +3,7 @@
 import {nextTick, reactive, ref, watch} from "vue";
 import {useMagicKeys, useScroll,} from '@vueuse/core'
 import {useChatSubscription} from "@/composable/useService";
+import {useAccessToken} from "@/composable/useAccessToken";
 
 const text = ref("")
 
@@ -44,11 +45,13 @@ watch(shiftCtrlA, (v) => {
   }
 })
 
-const {onResult, variables, loading} = useChatSubscription({msg: text.value ? text.value : "Hi, I'm Nekilc"}, {})
+const {name} = useAccessToken()
+
+const {onResult, loading} = useChatSubscription(() => ({msg: message.value ? message.value : `Hi, I'm ${name}`}), {})
 
 
 onResult((e) => {
-  histories[histories.length-1].text += e.data!.chat;
+  histories[histories.length - 1].text += e.data!.chat;
 })
 
 watch(loading, (value) => {
@@ -60,8 +63,8 @@ watch(loading, (value) => {
       is_finished: false
     })
     id.value += 1
-  }else{
-    histories[histories.length-1].is_finished = true
+  } else {
+    histories[histories.length - 1].is_finished = true
   }
 }, {
   immediate: true
