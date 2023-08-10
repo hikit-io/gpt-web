@@ -72,6 +72,9 @@ const {onResult, loading} = useChatSubscription(() => ({msg: message.value}), {}
 
 onResult((e) => {
   histories[histories.length - 1].text += e.data!.chat;
+  if (scroll.value){
+    scroll.value.scrollToBottom()
+  }
 })
 
 watch(loading, (value) => {
