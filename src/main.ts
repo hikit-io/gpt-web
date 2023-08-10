@@ -67,8 +67,8 @@ const authClient = new ApolloClient({
 createApp(App)
     .use(router)
     .use(VueVirtualScroller)
-    .provide(DefaultApolloClient, gptClient)
     .provide(ApolloClients,{
+        default:gptClient,
         auth: authClient
     })
     .mount('#app')
