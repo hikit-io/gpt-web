@@ -49,14 +49,13 @@ const title = import.meta.env.VITE_TITLE
       <user-menu></user-menu>
     </template>
   </var-app-bar>
-  <var-skeleton title avatar :loading="loading" :rows="8" style="height: 100%;">
-    <router-view></router-view>
-  </var-skeleton>
+  <router-view v-if="!loading"></router-view>
   <div style="flex: 1;"></div>
   <div class="footer">
     <var-divider></var-divider>
     <h4>@HiKit</h4>
   </div>
+  <var-skeleton fullscreen :loading="loading"></var-skeleton>
 </template>
 
 <style scoped>
