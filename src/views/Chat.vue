@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {nextTick, reactive, ref, watch} from "vue";
-import {useMagicKeys, useScroll,} from '@vueuse/core'
+import {until, useMagicKeys, useScroll,} from '@vueuse/core'
 import {useChatSubscription} from "@/composable/useService";
 import {useAccessToken} from "@/composable/useAccessToken";
 
@@ -27,7 +27,7 @@ const {name} = useAccessToken()
 
 const message = ref(`Hi,I'm ${name.value}`)
 
-const id = ref(0)
+const id = ref(histories.length)
 
 watch(cmdEnter, (v) => {
   if (v) {
@@ -42,11 +42,12 @@ watch(cmdEnter, (v) => {
     nextTick(() => {
       text.value = ''
       if (scroll.value) {
-        scroll.value.scrollToItem(histories.length - 1)
+        scroll.value.scrollToBottom()
       }
     })
   }
 })
+
 
 watch(ctrlEnter, (v) => {
   if (v) {
@@ -61,16 +62,13 @@ watch(ctrlEnter, (v) => {
     nextTick(() => {
       text.value = ''
       if (scroll.value) {
-        scroll.value.scrollToItem(histories.length - 1)
+        scroll.value.scrollToBottom()
       }
     })
   }
 })
 
-
-
 const {onResult, loading} = useChatSubscription(() => ({msg: message.value}), {})
-
 
 onResult((e) => {
   histories[histories.length - 1].text += e.data!.chat;
@@ -91,6 +89,7 @@ watch(loading, (value) => {
 }, {
   immediate: true
 })
+
 </script>
 
 <template>
