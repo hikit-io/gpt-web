@@ -53,7 +53,7 @@ const title = import.meta.env.VITE_TITLE
       <user-menu></user-menu>
     </template>
   </var-app-bar>
-  <router-view v-if="!appLoadingCtx.loading"></router-view>
+  <router-view v-if="!appLoadingCtx.loading.value"></router-view>
   <div style="flex: 1;"></div>
   <div class="footer">
     <var-divider></var-divider>
