@@ -49,7 +49,7 @@ const title = import.meta.env.VITE_TITLE
       <user-menu></user-menu>
     </template>
   </var-app-bar>
-  <var-skeleton title avatar :loading="loading" :rows="8">
+  <var-skeleton title avatar :loading="loading" :rows="8" style="height: 100%;">
     <router-view></router-view>
   </var-skeleton>
   <div style="flex: 1;"></div>
