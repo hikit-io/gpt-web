@@ -16,7 +16,7 @@ const {name} = useAccessToken()
       <var-icon name="chevron-down"></var-icon>
     </var-button>
     <template #menu>
-      <var-cell @click="onProfile" :ripple="true">Profile</var-cell>
+<!--      <var-cell @click="onProfile" :ripple="true">Profile</var-cell>-->
       <var-cell @click="logout" :ripple="true">Exit</var-cell>
     </template>
   </var-menu>

@@ -22,7 +22,9 @@ const shiftCtrlA = keys['Command+Enter']
 const scroll = ref<any | null>(null)
 const {x, y, isScrolling, arrivedState, directions} = useScroll(scroll)
 
-const message = ref('')
+const {name} = useAccessToken()
+
+const message = ref(name.value)
 
 const id = ref(0)
 
@@ -45,9 +47,9 @@ watch(shiftCtrlA, (v) => {
   }
 })
 
-const {name} = useAccessToken()
 
-const {onResult, loading} = useChatSubscription(() => ({msg: message.value ? message.value : `Hi, I'm ${name}`}), {})
+
+const {onResult, loading} = useChatSubscription(() => ({msg: message.value}), {})
 
 
 onResult((e) => {
