@@ -18,7 +18,7 @@ const histories = reactive<Record[]>([])
 
 const keys = useMagicKeys()
 const cmdEnter = keys['Command+Enter']
-const ctrlEnter = keys['control+Enter']
+const ctrlEnter = keys['Ctrl+Enter']
 
 const scroll = ref<any | null>(null)
 const {x, y, isScrolling, arrivedState, directions} = useScroll(scroll)
