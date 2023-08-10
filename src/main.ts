@@ -12,6 +12,7 @@ import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
 import {getMainDefinition} from "@apollo/client/utilities";
 import {onError} from "@apollo/client/link/error";
 import {Snackbar} from "@varlet/ui";
+import "@varlet/ui/es/snackbar/snackbar.css"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -31,9 +32,10 @@ const errorLink = onError(({graphQLErrors, networkError, response}) => {
                     `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Source: ${extension.error.source}`
                 )
                 if (extension.code == 2) {
-                    Snackbar.error({
+                    Snackbar({
+                        type: 'error',
                         content: extension.error.source,
-                        onClose:()=>{
+                        onClose: () => {
                             console.log('jump to login')
                         }
                     })
