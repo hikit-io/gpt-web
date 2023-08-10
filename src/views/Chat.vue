@@ -24,7 +24,7 @@ const {x, y, isScrolling, arrivedState, directions} = useScroll(scroll)
 
 const {name} = useAccessToken()
 
-const message = ref(name.value)
+const message = ref(`Hi,I'm ${name.value}`)
 
 const id = ref(0)
 
