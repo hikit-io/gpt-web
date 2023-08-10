@@ -24,15 +24,22 @@ const router = createRouter({
 
 const errorLink = onError(({graphQLErrors, networkError, response}) => {
     if (graphQLErrors)
-        graphQLErrors.forEach(({message, locations, path, extensions}) => {
-                 extensions = extensions as { code: number, error: { kind: number, source: string } }
-
+        graphQLErrors.forEach(({message, locations, path, extensions, originalError}) => {
+                extensions = extensions as { code: number, error: { kind: number, source: string } }
                 console.log(
                     `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Source: ${extensions.source}`
                 )
             }
         );
     if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (response?.errors){
+        response.errors.forEach(({message,locations,path,extensions})=>{
+            extensions = extensions as { code: number, error: { kind: number, source: string } }
+            console.log(
+                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Source: ${extensions.source}`
+            )
+        })
+    }
 });
 
 
