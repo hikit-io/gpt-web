@@ -34,7 +34,7 @@ const wsLink = new GraphQLWsLink(
 
 const link = split(
     // split based on operation type
-    ({ query }) => {
+    ({query}) => {
         const definition = getMainDefinition(query)
         return (
             definition.kind === "OperationDefinition" &&
@@ -67,8 +67,8 @@ const authClient = new ApolloClient({
 createApp(App)
     .use(router)
     .use(VueVirtualScroller)
-    .provide(ApolloClients,{
-        default:gptClient,
+    .provide(ApolloClients, {
+        default: gptClient,
         auth: authClient
     })
     .mount('#app')
