@@ -3,41 +3,36 @@
 import {provide} from "vue";
 import {AppBar, AppBarContext, useAppBarProvide} from "@/composable/useAppBar";
 import {useAccessToken} from "@/composable/useAccessToken";
-import {useRouter} from "vue-router";
 import UserMenu from "./UserMenu.vue";
-import {useGetNameLazyQuery} from "@/composable/useAuthService";
+import {useGetNameQuery} from "@/composable/useAuthService";
+import {useToggle} from "@vueuse/core";
 
 
 // Api Service
-
 
 // App bar state manage
 const appBarContext = useAppBarProvide()
 provide(AppBar, appBarContext as AppBarContext)
 
 // Check Login
-const router = useRouter()
 const token = useAccessToken()
 
-const {load, onResult, onError} = useGetNameLazyQuery({
-  clientId: 'auth'
+const [loading, loadingToggle] = useToggle(true)
+
+const {onResult, onError} = useGetNameQuery({
+  clientId: 'auth',
+  fetchPolicy: 'network-only'
 })
 
 onResult(param => {
-  if (param.data.profile.name) {
+  if (param.data.profile) {
     appBarContext.toggleRight(true)
+    loadingToggle()
   }
 })
 
 onError(param => {
-  console.log(`error:${param.message}`)
   token.del()
-  // window.location.href = `https://auth.hikit.io/?from=https://gpt.hikit.io`
-})
-
-
-router.beforeResolve((to, from) => {
-  load()
 })
 
 const title = import.meta.env.VITE_TITLE
@@ -54,7 +49,9 @@ const title = import.meta.env.VITE_TITLE
       <user-menu></user-menu>
     </template>
   </var-app-bar>
-  <router-view></router-view>
+  <var-skeleton title avatar :loading="loading" :rows="8">
+    <router-view></router-view>
+  </var-skeleton>
   <div style="flex: 1;"></div>
   <div class="footer">
     <var-divider></var-divider>

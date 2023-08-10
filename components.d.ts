@@ -22,5 +22,6 @@ declare module 'vue' {
     VarInput: typeof import('@varlet/ui')['_InputComponent']
     VarLoading: typeof import('@varlet/ui')['_LoadingComponent']
     VarMenu: typeof import('@varlet/ui')['_MenuComponent']
+    VarSkeleton: typeof import('@varlet/ui')['_SkeletonComponent']
   }
 }
