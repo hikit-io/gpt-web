@@ -42,7 +42,7 @@ watch(cmdEnter, (v) => {
     nextTick(() => {
       text.value = ''
       if (scroll.value) {
-        scroll.value.scrollToBottom()
+        scroll.value.scrollTop = scroll.value.scrollHeight
       }
     })
   }
@@ -62,7 +62,7 @@ watch(ctrlEnter, (v) => {
     nextTick(() => {
       text.value = ''
       if (scroll.value) {
-        scroll.value.scrollToBottom()
+        scroll.value.scrollTop = scroll.value.scrollHeight
       }
     })
   }
@@ -73,9 +73,7 @@ const {onResult, loading} = useChatSubscription(() => ({msg: message.value}), {}
 onResult((e) => {
   histories[histories.length - 1].text += e.data!.chat;
   nextTick(() => {
-    if (scroll.value) {
-      scroll.value.scrollToBottom()
-    }
+    scroll.value.scrollTop = scroll.value.scrollHeight
   })
 })
 

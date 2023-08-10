@@ -5,7 +5,6 @@ import {AppBar, AppBarContext, useAppBarProvide} from "@/composable/useAppBar";
 import {useAccessToken} from "@/composable/useAccessToken";
 import UserMenu from "@/views/UserMenu.vue";
 import {useGetNameQuery} from "@/composable/useAuthService";
-import {useToggle} from "@vueuse/core";
 import {AppLoading, AppLoadingContext, useAppLoadingProvide} from "@/composable/useAppLoading";
 
 
