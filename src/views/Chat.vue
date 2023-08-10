@@ -17,7 +17,8 @@ interface Record {
 const histories = reactive<Record[]>([])
 
 const keys = useMagicKeys()
-const shiftCtrlA = keys['Command+Enter']
+const cmdEnter = keys['Command+Enter']
+const ctrlEnter = keys['Ctrl+Enter']
 
 const scroll = ref<any | null>(null)
 const {x, y, isScrolling, arrivedState, directions} = useScroll(scroll)
@@ -28,7 +29,26 @@ const message = ref(`Hi,I'm ${name.value}`)
 
 const id = ref(0)
 
-watch(shiftCtrlA, (v) => {
+watch(cmdEnter, (v) => {
+  if (v) {
+    histories.push({
+      id: id.value + 1,
+      text: text.value,
+      direction: 'right',
+      is_finished: true,
+    })
+    id.value += 1
+    message.value = text.value
+    nextTick(() => {
+      text.value = ''
+      if (scroll.value) {
+        scroll.value.scrollToItem(histories.length - 1)
+      }
+    })
+  }
+})
+
+watch(ctrlEnter, (v) => {
   if (v) {
     histories.push({
       id: id.value + 1,
