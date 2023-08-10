@@ -1,13 +1,3 @@
-query getProfile{
-    profile{
-        id
-        name
-        email
-    }
-}
-
-query getName{
-    profile{
-        name
-    }
+subscription chat($msg:String!){
+    chat(message: $msg)
 }

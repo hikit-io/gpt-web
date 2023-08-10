@@ -9,7 +9,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     ChatRecordItem: typeof import('./src/components/ChatRecordItem.vue')['default']
     Icon: typeof import('./src/components/Icon.vue')['default']
+    IconMdiUser: typeof import('~icons/mdi/user')['default']
     Loading: typeof import('./src/components/Loading.vue')['default']
+    Markdown: typeof import('./src/components/Markdown.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VarAppBar: typeof import('@varlet/ui')['_AppBarComponent']
@@ -18,7 +20,7 @@ declare module 'vue' {
     VarDivider: typeof import('@varlet/ui')['_DividerComponent']
     VarIcon: typeof import('@varlet/ui')['_IconComponent']
     VarInput: typeof import('@varlet/ui')['_InputComponent']
+    VarLoading: typeof import('@varlet/ui')['_LoadingComponent']
     VarMenu: typeof import('@varlet/ui')['_MenuComponent']
-    VarPaper: typeof import('@varlet/ui')['_PaperComponent']
   }
 }

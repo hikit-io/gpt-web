@@ -1,23 +1,19 @@
 <script setup lang="ts">
 
-import {nextTick, ref, watch} from "vue";
+import {nextTick, reactive, ref, watch} from "vue";
 import {useMagicKeys, useScroll,} from '@vueuse/core'
+import {useChatSubscription} from "@/composable/useService";
 
-const text = ref('')
+const text = ref("")
 
 interface Record {
   id: number,
   text: string,
-  direction: 'left' | 'right'
+  direction: 'left' | 'right',
+  is_finished: boolean
 }
 
-const histories = ref<Record[]>([
-  {
-    id: 0,
-    text: 'Hi',
-    direction: 'left'
-  }
-])
+const histories = reactive<Record[]>([])
 
 const keys = useMagicKeys()
 const shiftCtrlA = keys['Command+Enter']
@@ -25,25 +21,51 @@ const shiftCtrlA = keys['Command+Enter']
 const scroll = ref<any | null>(null)
 const {x, y, isScrolling, arrivedState, directions} = useScroll(scroll)
 
+const message = ref('')
+
 const id = ref(0)
+
 watch(shiftCtrlA, (v) => {
   if (v) {
-    histories.value.push({
+    histories.push({
       id: id.value + 1,
       text: text.value,
-      direction: 'right'
+      direction: 'right',
+      is_finished: true,
     })
     id.value += 1
+    message.value = text.value
     nextTick(() => {
       text.value = ''
-      if (scroll.value){
-        scroll.value.scrollToItem(histories.value.length-1)
+      if (scroll.value) {
+        scroll.value.scrollToItem(histories.length - 1)
       }
     })
   }
 })
 
-const active = ref(true)
+const {onResult, variables, loading} = useChatSubscription({msg: text.value ? text.value : "Hi, I'm Nekilc"}, {})
+
+
+onResult((e) => {
+  histories[histories.length-1].text += e.data!.chat;
+})
+
+watch(loading, (value) => {
+  if (value) {
+    histories.push({
+      id: id.value + 1,
+      text: text.value,
+      direction: 'left',
+      is_finished: false
+    })
+    id.value += 1
+  }else{
+    histories[histories.length-1].is_finished = true
+  }
+}, {
+  immediate: true
+})
 </script>
 
 <template>
@@ -68,14 +90,20 @@ const active = ref(true)
             >
               <chat-record-item :direction="item.direction"
                                 :key="index"
+                                :loading="!item.is_finished"
                                 :text="item.text"/>
             </DynamicScrollerItem>
           </template>
         </DynamicScroller>
-
       </div>
       <div class="edit">
-        <var-input v-model="text" variant="outlined" :rows="4" placeholder="Cmd/Ctrl + Enter to send" textarea></var-input>
+        <var-loading type="wave" size="small" :loading="loading">
+          <var-input v-model="text" variant="outlined" :rows="4" placeholder="Cmd/Ctrl + Enter to send" :loading="true"
+                     textarea/>
+          <template #description>
+            <var-button>Cancel</var-button>
+          </template>
+        </var-loading>
       </div>
     </div>
   </div>

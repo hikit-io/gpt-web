@@ -20,7 +20,10 @@
       "@/*": [
         "src/*"
       ]
-    }
+    },
+    "types": [
+      "node",
+    ]
   },
   "include": [
     "src/**/*.ts",
@@ -35,5 +38,5 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
 }

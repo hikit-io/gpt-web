@@ -5,6 +5,7 @@ import {AppBar, AppBarContext, useAppBarProvide} from "@/composable/useAppBar";
 import {useAccessToken} from "@/composable/useAccessToken";
 import {useRouter} from "vue-router";
 import UserMenu from "./UserMenu.vue";
+import {useGetNameLazyQuery} from "@/composable/useAuthService";
 
 
 // Api Service
@@ -17,19 +18,28 @@ provide(AppBar, appBarContext as AppBarContext)
 // Check Login
 const router = useRouter()
 const token = useAccessToken()
-const {push} = useRouter()
 
-router.beforeResolve((to, from) => {
-  console.log('checkLogin')
+const {load, onResult, onError} = useGetNameLazyQuery({
+  clientId: 'auth'
+})
 
-  if (token.get()) {
-
-  } else if (to.path === '/login' || to.path === '/') {
-
-  } else {
-    push('/')
+onResult(param => {
+  if (param.data.profile) {
+    appBarContext.toggleRight(true)
   }
 })
+
+onError(param => {
+  console.log(`error:${param.message}`)
+  token.del()
+  window.location.href = `https://auth.hikit.io/?from=https://gpt.hikit.io`
+})
+
+
+router.beforeResolve((to, from) => {
+  load()
+})
+
 const title = import.meta.env.VITE_TITLE
 
 
