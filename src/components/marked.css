@@ -1,6 +1,6 @@
 pre code.hljs {
-    display: block;
     overflow-x: auto;
+    display: block;
     padding: 1em
 }
 
@@ -56,8 +56,8 @@ code.hljs {
 }
 
 .hljs-section {
-    color: #005cc5;
-    font-weight: 700
+    font-weight: 700;
+    color: #005cc5
 }
 
 .hljs-bullet {
@@ -65,13 +65,13 @@ code.hljs {
 }
 
 .hljs-emphasis {
-    color: #24292e;
-    font-style: italic
+    font-style: italic;
+    color: #24292e
 }
 
 .hljs-strong {
-    color: #24292e;
-    font-weight: 700
+    font-weight: 700;
+    color: #24292e
 }
 
 .hljs-addition {

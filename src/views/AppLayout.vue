@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-
-import {provide} from "vue";
-import {AppBar, AppBarContext, useAppBarProvide} from "@/composable/useAppBar";
-import {useAccessToken} from "@/composable/useAccessToken";
-import UserMenu from "@/views/UserMenu.vue";
-import {useGetNameQuery} from "@/composable/useAuthService";
-import {AppLoading, AppLoadingContext, useAppLoadingProvide} from "@/composable/useAppLoading";
-
+import { provide } from 'vue'
+import { AppBar, AppBarContext, useAppBarProvide } from '@/composable/useAppBar'
+import { useAccessToken } from '@/composable/useAccessToken'
+import UserMenu from '@/views/UserMenu.vue'
+import { useGetNameQuery } from '@/composable/useAuthService'
+import { AppLoading, AppLoadingContext, useAppLoadingProvide } from '@/composable/useAppLoading'
 
 // Api Service
 
@@ -22,25 +20,23 @@ appLoadingCtx.on()
 // Check Login
 const token = useAccessToken()
 
-const {onResult, onError} = useGetNameQuery({
+const { onResult, onError } = useGetNameQuery({
   clientId: 'auth',
-  fetchPolicy: 'network-only'
+  fetchPolicy: 'network-only',
 })
 
-onResult(param => {
+onResult((param) => {
   if (param.data.profile) {
     appBarCtx.on()
     appLoadingCtx.off()
   }
 })
 
-onError(param => {
+onError((param) => {
   token.del()
 })
 
 const title = import.meta.env.VITE_TITLE
-
-
 </script>
 
 <template>
@@ -53,7 +49,7 @@ const title = import.meta.env.VITE_TITLE
     </template>
   </var-app-bar>
   <router-view v-if="!appLoadingCtx.loading.value"></router-view>
-  <div style="flex: 1;"></div>
+  <div style="flex: 1"></div>
   <div class="footer">
     <var-divider></var-divider>
     <h4>@HiKit</h4>

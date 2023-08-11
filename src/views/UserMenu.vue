@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-import {useAppBar} from "@/composable/useAppBar";
-import {useAccessToken} from "@/composable/useAccessToken";
+import { useAppBar } from '@/composable/useAppBar'
+import { useAccessToken } from '@/composable/useAccessToken'
 
-const {onProfile, logout, showRight} = useAppBar()
+const { onProfile, logout, showRight } = useAppBar()
 
-const {name} = useAccessToken()
-
-
+const { name } = useAccessToken()
 </script>
 
 <template>
@@ -16,12 +14,9 @@ const {name} = useAccessToken()
       <var-icon name="chevron-down"></var-icon>
     </var-button>
     <template #menu>
-      <!--      <var-cell @click="onProfile" :ripple="true">Profile</var-cell>-->
       <var-cell @click="logout" :ripple="true">Exit</var-cell>
     </template>
   </var-menu>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
