@@ -7,6 +7,8 @@ import {createHtmlPlugin} from 'vite-plugin-html'
 import {resolve} from 'path'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
+import mkcert from'vite-plugin-mkcert'
+
 
 const INVALID_CHAR_REGEX = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g;
 const DRIVE_LETTER_REGEX = /^[a-z]:/i;
@@ -20,6 +22,7 @@ export default defineConfig((env) => {
         },
         plugins: [
             vue(),
+            mkcert(),
             Icons({
                 autoInstall: true,
                 compiler: "vue3",
@@ -63,7 +66,9 @@ export default defineConfig((env) => {
             transformer: 'lightningcss',
         },
         server: {
-            port: 80
+            strictPort: true,
+            port: 443,
+            https: true,
         }
     }
 })

@@ -21,6 +21,13 @@ const useAccessToken = (): AccessTokenContext => {
     cookies.remove('HIKIT', {
       path: '/',
     })
+    cookies.remove('HIKIT_NAME', {
+      domain: '.hikit.io',
+      path: '/',
+    })
+    cookies.remove('HIKIT_NAME', {
+      path: '/',
+    })
   }
   const name = computed(() => cookies.get<string>('HIKIT_NAME'))
   return {
