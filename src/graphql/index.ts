@@ -32,6 +32,7 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 
 const httpLink = createHttpLink({
     uri: 'https://api.hikit.io/gpt/',
+    credentials: 'include',
 })
 
 const wsLink = new GraphQLWsLink(
@@ -60,20 +61,19 @@ const cache = new InMemoryCache()
 const gptClient = new ApolloClient({
     link: link,
     cache: cache,
-    credentials: 'include',
 })
 
 const authLink = from([
     errorLink,
     createHttpLink({
         uri: 'https://api.hikit.io/auth/',
+        credentials: 'include',
     }),
 ])
 
 const authClient = new ApolloClient({
     link: authLink,
     cache: cache,
-    credentials: 'include',
 })
 
 export const install: (app: App) => void = (app) => {
