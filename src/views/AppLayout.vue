@@ -32,7 +32,7 @@ onResult((param) => {
   }
 })
 
-onError((param) => {
+onError(() => {
   token.del()
 })
 

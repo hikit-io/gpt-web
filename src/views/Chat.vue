@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {nextTick, onUpdated, reactive, ref, watch} from 'vue'
-import { useMagicKeys, useScroll } from '@vueuse/core'
+import { nextTick, reactive, ref, watch } from 'vue'
+import { useMagicKeys } from '@vueuse/core'
 import { useChatSubscription } from '@/composable/useService'
 import { useAccessToken } from '@/composable/useAccessToken'
 
@@ -19,8 +19,7 @@ const keys = useMagicKeys()
 const cmdEnter = keys['Command+Enter']
 const ctrlEnter = keys['Ctrl+Enter']
 
-const scroll = ref<any | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll)
+const chatScroller = ref<any | null>(null)
 
 const { name } = useAccessToken()
 
@@ -40,8 +39,8 @@ watch(cmdEnter, (v) => {
     message.value = text.value
     nextTick(() => {
       text.value = ''
-      if (scroll.value) {
-        scroll.value.scrollTop = scroll.value.scrollHeight
+      if (chatScroller.value) {
+        // scroll.value.scrollToBottom()
       }
     })
   }
@@ -59,8 +58,8 @@ watch(ctrlEnter, (v) => {
     message.value = text.value
     nextTick(() => {
       text.value = ''
-      if (scroll.value) {
-        scroll.value.scrollTop = scroll.value.scrollHeight
+      if (chatScroller.value) {
+        // scroll.value.scrollToBottom()
       }
     })
   }
@@ -71,13 +70,17 @@ const { onResult, loading } = useChatSubscription(() => ({ msg: message.value })
 onResult((e) => {
   histories[histories.length - 1].text += e.data!.chat
   nextTick(() => {
-    scroll.value.scrollTop = scroll.value.scrollHeight
+    setTimeout(() => {
+      if (chatScroller.value) {
+        chatScroller.value.scrollToBottom()
+      }
+    }, 50)
   })
 })
 
-onUpdated(() => {
-  scroll.value.scrollTop = scroll.value.scrollHeight
-})
+// onUpdated(() => {
+//   scroll.value.scrollToBottom()
+// })
 
 watch(
   loading,
@@ -104,7 +107,7 @@ watch(
   <div class="main">
     <div class="chat-main">
       <div class="history">
-        <DynamicScroller ref="scroll" :items="histories" :min-item-size="54" key-field="id" class="scroller">
+        <DynamicScroller ref="chatScroller" :items="histories" :min-item-size="1" key-field="id" class="scroller">
           <template #default="{ item, index, active }">
             <DynamicScrollerItem :item="item" :active="active" :data-index="index" :size-dependencies="[item.text]">
               <chat-record-item :direction="item.direction" :key="index" :loading="!item.is_finished" :text="item.text" />

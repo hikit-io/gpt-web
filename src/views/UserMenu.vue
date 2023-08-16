@@ -2,7 +2,7 @@
 import { useAppBar } from '@/composable/useAppBar'
 import { useAccessToken } from '@/composable/useAccessToken'
 
-const { onProfile, logout, showRight } = useAppBar()
+const { logout, showRight } = useAppBar()
 
 const { name } = useAccessToken()
 </script>

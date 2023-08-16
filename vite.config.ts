@@ -1,74 +1,70 @@
-import {defineConfig, loadEnv} from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import components from 'unplugin-vue-components/vite'
 import autoImport from 'unplugin-auto-import/vite'
-import {VarletUIResolver} from 'unplugin-vue-components/resolvers'
-import {createHtmlPlugin} from 'vite-plugin-html'
-import {resolve} from 'path'
+import { VarletUIResolver } from 'unplugin-vue-components/resolvers'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import { resolve } from 'path'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
-import mkcert from'vite-plugin-mkcert'
+import mkcert from 'vite-plugin-mkcert'
 
-
-const INVALID_CHAR_REGEX = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g;
-const DRIVE_LETTER_REGEX = /^[a-z]:/i;
+// eslint-disable-next-line no-control-regex
+const INVALID_CHAR_REGEX = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g
+const DRIVE_LETTER_REGEX = /^[a-z]:/i
 
 export default defineConfig((env) => {
-    return {
-        resolve: {
-            alias: {
-                "@": resolve(__dirname, "./src")
-            }
-        },
-        plugins: [
-            vue(),
-            mkcert(),
-            Icons({
-                autoInstall: true,
-                compiler: "vue3",
-            }),
-            components({
-                resolvers: [
-                    VarletUIResolver(),
-                    IconsResolver({
-                        prefix: 'icon',
-                    }),
-                ]
-            }),
-            autoImport({
-                resolvers: [VarletUIResolver({autoImport: true})]
-            }),
-            createHtmlPlugin({
-                inject: {
-                    data: {
-                        ...loadEnv(env.mode, process.cwd())
-                    }
-                }
-            })
+  return {
+    server: {
+      strictPort: true,
+      port: 443,
+    },
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, './src'),
+      },
+    },
+    plugins: [
+      vue(),
+      mkcert(),
+      Icons({
+        autoInstall: true,
+        compiler: 'vue3',
+      }),
+      components({
+        resolvers: [
+          VarletUIResolver(),
+          IconsResolver({
+            prefix: 'icon',
+          }),
         ],
-        build: {
-            outDir: 'docs',
-            cssMinify: 'lightningcss',
-            rollupOptions: {
-                output: {
-                    sanitizeFileName(fileName) {
-                        const match = DRIVE_LETTER_REGEX.exec(fileName);
-                        const driveLetter = match ? match[0] : "";
-                        return (
-                            driveLetter +
-                            fileName.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "")
-                        );
-                    },
-                }
-            }
+      }),
+      autoImport({
+        resolvers: [VarletUIResolver({ autoImport: true })],
+      }),
+      createHtmlPlugin({
+        inject: {
+          data: {
+            ...loadEnv(env.mode, process.cwd()),
+          },
         },
-        css: {
-            transformer: 'lightningcss',
+      }),
+    ],
+    build: {
+      outDir: 'docs',
+      cssMinify: 'lightningcss',
+      rollupOptions: {
+        output: {
+          sanitizeFileName(fileName) {
+            const match = DRIVE_LETTER_REGEX.exec(fileName)
+            const driveLetter = match ? match[0] : ''
+            return driveLetter + fileName.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, '')
+          },
         },
-        server: {
-            strictPort: true,
-            port: 443,
-            https: true,
-        }
-    }
+      },
+    },
+    css: {
+      transformer: 'lightningcss',
+    },
+  }
 })
