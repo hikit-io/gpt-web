@@ -40,7 +40,7 @@ watch(cmdEnter, (v) => {
     nextTick(() => {
       text.value = ''
       if (chatScroller.value) {
-        // scroll.value.scrollToBottom()
+        chatScroller.value.scrollToBottom()
       }
     })
   }
@@ -59,7 +59,7 @@ watch(ctrlEnter, (v) => {
     nextTick(() => {
       text.value = ''
       if (chatScroller.value) {
-        // scroll.value.scrollToBottom()
+        chatScroller.value.scrollToBottom()
       }
     })
   }
@@ -77,10 +77,6 @@ onResult((e) => {
     }, 50)
   })
 })
-
-// onUpdated(() => {
-//   scroll.value.scrollToBottom()
-// })
 
 watch(
   loading,
