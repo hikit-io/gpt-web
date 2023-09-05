@@ -27,7 +27,27 @@ export default defineConfig((env) => {
     },
     plugins: [
       vue(),
-      VitePWA({ registerType: 'autoUpdate' }),
+      VitePWA({
+        registerType: 'autoUpdate',
+        devOptions: {
+          enabled: true,
+        },
+        manifest: {
+          icons: [
+            {
+              src: 'index128.png',
+              sizes: '128x128',
+              type: 'image/png',
+            },
+            {
+              src: 'index512.png',
+              sizes: '256x256',
+              type: 'image/png',
+            },
+          ],
+        },
+        includeManifestIcons: true,
+      }),
       mkcert(),
       Icons({
         autoInstall: true,
