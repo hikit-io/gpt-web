@@ -33,6 +33,8 @@ export default defineConfig((env) => {
           enabled: true,
         },
         manifest: {
+          name: 'HiGPT',
+          short_name: 'HiGPT',
           icons: [
             {
               src: 'index128.png',
