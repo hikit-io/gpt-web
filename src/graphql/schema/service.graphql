@@ -5,10 +5,20 @@ schema {
     subscription: Subscription
 }
 
+type Profile {
+    count: Count!
+    createTs: Int!
+    id: Int!
+    userId: String!
+}
+
 type Query {
     ping: String!
+    profile: Profile!
 }
 
 type Subscription {
     chat(message: String!): String!
 }
+
+scalar Count

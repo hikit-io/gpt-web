@@ -1,3 +1,16 @@
 subscription chat($msg:String!){
     chat(message: $msg)
 }
+
+query getProfile{
+    profile {
+        userId
+        count
+    }
+}
+
+query getCount{
+    profile {
+        count
+    }
+}

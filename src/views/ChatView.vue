@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, reactive, ref, watch } from 'vue'
-import { useMagicKeys } from '@vueuse/core'
+import { useDateFormat, useFileSystemAccess, useMagicKeys, useNow } from '@vueuse/core'
 import { useChatSubscription } from '@/composable/useService'
 import { useAccessToken } from '@/composable/useAccessToken'
 
@@ -97,6 +97,20 @@ watch(
     immediate: true,
   },
 )
+
+const onExport = () => {
+  const { saveAs, data } = useFileSystemAccess({})
+  data.value = ''
+  const formatted = useDateFormat(useNow(), 'YYYY-MM-DD_HH:mm:ss')
+  for (const history of histories) {
+    if (history.direction == 'left') {
+      data.value += `GPT:\n${history.text}\n`
+    } else {
+      data.value += `You:\n${history.text}\n`
+    }
+  }
+  saveAs({ suggestedName: `${formatted.value}.md` })
+}
 </script>
 
 <template>
@@ -113,7 +127,17 @@ watch(
       </div>
       <div class="edit">
         <var-loading type="wave" size="small" :loading="loading">
-          <var-input v-model="text" variant="outlined" :rows="4" placeholder="Cmd/Ctrl + Enter to send" :loading="true" textarea />
+          <div style="display: flex; flex-direction: row; width: 100%">
+            <var-input
+              v-model="text"
+              variant="outlined"
+              style="width: 100%"
+              :rows="4"
+              placeholder="Cmd/Ctrl + Enter to send"
+              :loading="true"
+              textarea
+            />
+          </div>
           <template #description>
             <var-button>Cancel</var-button>
           </template>
@@ -121,6 +145,11 @@ watch(
       </div>
     </div>
   </div>
+  <var-fab class="fab" :active="true" bottom="2em" inactive-icon="wrench">
+    <var-button @click="onExport" type="info" :size="'large'" round>
+      <var-icon name="download" size="30" />
+    </var-button>
+  </var-fab>
 </template>
 
 <style scoped>
@@ -140,7 +169,7 @@ watch(
   height: 100%;
   padding: 1em;
 
-  border: solid 1px gray;
+  border: solid 1px rgb(128, 128, 128);
   border-bottom: none;
   border-radius: 3px;
 }
@@ -160,6 +189,7 @@ watch(
 
 .scroller {
   height: 100%;
+  scrollbar-width: none; /* Firefox */
 }
 
 .scroller::-webkit-scrollbar {

@@ -8,6 +8,7 @@ import { resolve } from 'path'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import mkcert from 'vite-plugin-mkcert'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // eslint-disable-next-line no-control-regex
 const INVALID_CHAR_REGEX = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g
@@ -26,6 +27,7 @@ export default defineConfig((env) => {
     },
     plugins: [
       vue(),
+      VitePWA({ registerType: 'autoUpdate' }),
       mkcert(),
       Icons({
         autoInstall: true,

@@ -7,6 +7,16 @@ import { createClient } from 'graphql-ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { App } from 'vue'
 import { ApolloClients } from '@vue/apollo-composable'
+import { DefaultOptions } from '@apollo/client/core/ApolloClient'
+
+const defaultOptions: DefaultOptions = {
+  query: {
+    fetchPolicy: 'network-only',
+  },
+  mutate:{
+    fetchPolicy: 'network-only',
+  },
+}
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -75,6 +85,7 @@ const authLink = from([
 const authClient = new ApolloClient({
   link: authLink,
   cache: cache,
+  defaultOptions:defaultOptions,
 })
 
 export const install: (app: App) => void = (app) => {
