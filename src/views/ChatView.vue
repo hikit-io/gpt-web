@@ -4,6 +4,8 @@ import { useDateFormat, useFileSystemAccess, useMagicKeys, useNow } from '@vueus
 import { useChatSubscription } from '@/composable/useService'
 import { useAccessToken } from '@/composable/useAccessToken'
 
+import { saveAs as saverAs } from 'file-saver'
+
 const text = ref('')
 
 interface Record {
@@ -98,8 +100,8 @@ watch(
   },
 )
 
-const onExport = () => {
-  const { saveAs, data } = useFileSystemAccess({})
+const onExport = async () => {
+  const { saveAs, data, isSupported } = useFileSystemAccess({})
   data.value = ''
   const formatted = useDateFormat(useNow(), 'YYYY-MM-DD_HH:mm:ss')
   for (const history of histories) {
@@ -109,7 +111,13 @@ const onExport = () => {
       data.value += `You:\n${history.text}\n`
     }
   }
-  saveAs({ suggestedName: `${formatted.value}.md` })
+  if (isSupported.value) {
+    saveAs({ suggestedName: `${formatted.value}.md` })
+  } else {
+    // await window.showOpenFilePicker()
+    const blob = new Blob([data.value], { type: 'text/plain;charset=utf-8' })
+    saverAs(blob, `${formatted.value}.md`)
+  }
 }
 </script>
 

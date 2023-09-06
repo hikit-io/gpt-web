@@ -32,11 +32,11 @@
     "src/**/*.vue",
     "auto-imports.d.ts",
     "components.d.ts",
-    "vue-virtual-scroller.d.ts"
+    "vue-virtual-scroller.d.ts",
   ],
   "references": [
     {
       "path": "./tsconfig.node.json"
     }
-  ],
+  ]
 }
