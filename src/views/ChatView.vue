@@ -119,6 +119,10 @@ const onExport = async () => {
     saverAs(blob, `${formatted.value}.md`)
   }
 }
+
+const onClear = () => {
+  histories.splice(0, histories.length)
+}
 </script>
 
 <template>
@@ -156,6 +160,9 @@ const onExport = async () => {
   <var-fab class="fab" :active="true" bottom="2em" inactive-icon="wrench">
     <var-button @click="onExport" type="info" :size="'large'" round>
       <var-icon name="download" size="30" />
+    </var-button>
+    <var-button @click="onClear" type="warning" :size="'large'" round>
+      <var-icon name="trash-can" size="30"/>
     </var-button>
   </var-fab>
 </template>
