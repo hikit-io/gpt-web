@@ -37,6 +37,35 @@ export function useGetNameLazyQuery(options: VueApolloComposable.UseQueryOptions
   return VueApolloComposable.useLazyQuery<GetNameQuery, GetNameQueryVariables>(GetNameDocument, {}, options);
 }
 export type GetNameQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetNameQuery, GetNameQueryVariables>;
+export const GetAppBarRightDocument = gql`
+    query getAppBarRight {
+  profile {
+    name
+    account
+    avatar
+  }
+}
+    `;
+
+/**
+ * __useGetAppBarRightQuery__
+ *
+ * To run a query within a Vue component, call `useGetAppBarRightQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAppBarRightQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetAppBarRightQuery();
+ */
+export function useGetAppBarRightQuery(options: VueApolloComposable.UseQueryOptions<GetAppBarRightQuery, GetAppBarRightQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAppBarRightQuery, GetAppBarRightQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAppBarRightQuery, GetAppBarRightQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetAppBarRightQuery, GetAppBarRightQueryVariables>(GetAppBarRightDocument, {}, options);
+}
+export function useGetAppBarRightLazyQuery(options: VueApolloComposable.UseQueryOptions<GetAppBarRightQuery, GetAppBarRightQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAppBarRightQuery, GetAppBarRightQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAppBarRightQuery, GetAppBarRightQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetAppBarRightQuery, GetAppBarRightQueryVariables>(GetAppBarRightDocument, {}, options);
+}
+export type GetAppBarRightQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetAppBarRightQuery, GetAppBarRightQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -53,6 +82,7 @@ export type DeleteResp = {
 
 export type EmailLoginParams = {
   email: Scalars['String']['input'];
+  otp?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
 };
 
@@ -86,8 +116,11 @@ export type MutationLoginArgs = {
 
 export type Profile = {
   __typename?: 'Profile';
+  account: Scalars['String']['output'];
+  avatar: Scalars['String']['output'];
   email: Scalars['String']['output'];
   id: Scalars['String']['output'];
+  isOtp: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
 };
 
@@ -100,3 +133,8 @@ export type GetNameQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetNameQuery = { __typename?: 'Query', profile: { __typename?: 'Profile', name: string } };
+
+export type GetAppBarRightQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAppBarRightQuery = { __typename?: 'Query', profile: { __typename?: 'Profile', name: string, account: string, avatar: string } };

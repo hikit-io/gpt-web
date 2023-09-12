@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
-const props = defineProps<{ direction: 'left' | 'right'; text: string; loading: boolean }>()
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
+import { useAppBar } from '@/composable/useAppBar'
+import { BasicColorSchema } from '@vueuse/core'
+
+const props = defineProps<{ direction: 'left' | 'right'; text: string; loading: boolean }>()
+const { colorMode } = useAppBar()
 
 const loading = computed(() => props.loading)
 const text = computed(() => props.text)
+const theme: { [key in BasicColorSchema]: 'dark' | 'light' } = {
+  auto: 'light',
+  light: 'light',
+  dark: 'dark',
+}
 </script>
 
 <template>
@@ -15,7 +23,7 @@ const text = computed(() => props.text)
       <icon-mdi-user></icon-mdi-user>
     </div>
     <div class="md">
-      <MdPreview class="md" v-model="text" preview-theme="github"></MdPreview>
+      <MdPreview class="md" v-model="text" :theme="theme[colorMode]" preview-theme="github"></MdPreview>
       <var-loading type="wave" size="small" v-if="loading" />
     </div>
   </div>
@@ -58,5 +66,6 @@ const text = computed(() => props.text)
 
 .md {
   display: flex;
+  background: transparent;
 }
 </style>

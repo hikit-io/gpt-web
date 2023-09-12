@@ -1,5 +1,6 @@
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { computed, Ref } from 'vue'
+import useEnv from './useEnv'
 
 export interface AccessTokenContext {
   name: Ref<string>
@@ -9,27 +10,23 @@ export interface AccessTokenContext {
 
 const useAccessToken = (): AccessTokenContext => {
   const cookies = useCookies()
-
+  const { rootDomain, keyPrefix } = useEnv()
   const get = () => {
-    return cookies.get<string>('HIKIT')
+    const cookie = cookies.get<string>(keyPrefix)
+    console.log(cookie)
+    return cookie
   }
   const del = () => {
-    cookies.remove('HIKIT', {
+    cookies.remove(keyPrefix, {
       path: '/',
-      domain: '.hikit.io',
+      domain: rootDomain,
     })
-    cookies.remove('HIKIT', {
+    cookies.remove(`${keyPrefix}_NAME`, {
       path: '/',
-    })
-    cookies.remove('HIKIT_NAME', {
-      domain: '.hikit.io',
-      path: '/',
-    })
-    cookies.remove('HIKIT_NAME', {
-      path: '/',
+      domain: rootDomain,
     })
   }
-  const name = computed(() => cookies.get<string>('HIKIT_NAME'))
+  const name = computed(() => cookies.get<string>(`${keyPrefix}_NAME`))
   return {
     name,
     get,

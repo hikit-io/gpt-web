@@ -1,20 +1,18 @@
 <script lang="ts" setup>
-import { provide } from 'vue'
-import { AppBar, AppBarContext, useAppBarProvide } from '@/composable/useAppBar'
+import { useAppBarProvide } from '@/composable/useAppBar'
 import { useAccessToken } from '@/composable/useAccessToken'
-import UserMenu from '@/views/UserMenu.vue'
 import { useGetNameQuery } from '@/composable/useAuthService'
-import { AppLoading, AppLoadingContext, useAppLoadingProvide } from '@/composable/useAppLoading'
+import { useAppLoadingProvide } from '@/composable/useAppLoading'
+import AppBarLeft from '@/views/layout/AppBarLeft.vue'
+import AppBarRight from '@/views/layout/AppBarRight.vue'
 
 // Api Service
 
 // App bar state manage
 const appBarCtx = useAppBarProvide()
-provide(AppBar, appBarCtx as AppBarContext)
 
 // App loading
 const appLoadingCtx = useAppLoadingProvide()
-provide(AppLoading, appLoadingCtx as AppLoadingContext)
 appLoadingCtx.on()
 
 // Check Login
@@ -35,17 +33,13 @@ onResult((param) => {
 onError(() => {
   token.del()
 })
-
-const title = import.meta.env.VITE_TITLE
 </script>
 
 <template>
   <var-app-bar>
-    <router-link to="/" class="title">
-      {{ title }}
-    </router-link>
+    <app-bar-left />
     <template #right>
-      <user-menu></user-menu>
+      <app-bar-right />
     </template>
   </var-app-bar>
   <router-view v-if="!appLoadingCtx.loading.value"></router-view>

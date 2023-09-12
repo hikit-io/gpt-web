@@ -15,14 +15,15 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VarAppBar: typeof import('@varlet/ui')['_AppBarComponent']
+    VarAvatar: typeof import('@varlet/ui')['_AvatarComponent']
     VarButton: typeof import('@varlet/ui')['_ButtonComponent']
-    VarCell: typeof import('@varlet/ui')['_CellComponent']
     VarDivider: typeof import('@varlet/ui')['_DividerComponent']
     VarFab: typeof import('@varlet/ui')['_FabComponent']
     VarIcon: typeof import('@varlet/ui')['_IconComponent']
     VarInput: typeof import('@varlet/ui')['_InputComponent']
     VarLoading: typeof import('@varlet/ui')['_LoadingComponent']
-    VarMenu: typeof import('@varlet/ui')['_MenuComponent']
+    VarPopup: typeof import('@varlet/ui')['_PopupComponent']
     VarSkeleton: typeof import('@varlet/ui')['_SkeletonComponent']
+    VarSpace: typeof import('@varlet/ui')['_SpaceComponent']
   }
 }

@@ -4,3 +4,12 @@ query getName{
         name
     }
 }
+
+
+query getAppBarRight{
+    profile {
+        name
+        account
+        avatar
+    }
+}

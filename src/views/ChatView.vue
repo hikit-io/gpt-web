@@ -162,7 +162,7 @@ const onClear = () => {
       <var-icon name="download" size="30" />
     </var-button>
     <var-button @click="onClear" type="warning" :size="'large'" round>
-      <var-icon name="trash-can" size="30"/>
+      <var-icon name="trash-can" size="30" />
     </var-button>
   </var-fab>
 </template>

@@ -63,6 +63,33 @@ export function useGetProfileLazyQuery(options: VueApolloComposable.UseQueryOpti
   return VueApolloComposable.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, {}, options);
 }
 export type GetProfileQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetProfileQuery, GetProfileQueryVariables>;
+export const GetCountDocument = gql`
+    query getCount {
+  profile {
+    count
+  }
+}
+    `;
+
+/**
+ * __useGetCountQuery__
+ *
+ * To run a query within a Vue component, call `useGetCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCountQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetCountQuery();
+ */
+export function useGetCountQuery(options: VueApolloComposable.UseQueryOptions<GetCountQuery, GetCountQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCountQuery, GetCountQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCountQuery, GetCountQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetCountQuery, GetCountQueryVariables>(GetCountDocument, {}, options);
+}
+export function useGetCountLazyQuery(options: VueApolloComposable.UseQueryOptions<GetCountQuery, GetCountQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCountQuery, GetCountQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCountQuery, GetCountQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetCountQuery, GetCountQueryVariables>(GetCountDocument, {}, options);
+}
+export type GetCountQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetCountQuery, GetCountQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -108,3 +135,8 @@ export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProfileQuery = { __typename?: 'Query', profile: { __typename?: 'Profile', userId: string, count: any } };
+
+export type GetCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCountQuery = { __typename?: 'Query', profile: { __typename?: 'Profile', count: any } };
