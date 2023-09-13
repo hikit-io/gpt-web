@@ -61,7 +61,7 @@ const theme: { [key in BasicColorSchema]: 'dark' | 'light' } = {
 }
 
 :deep(.md-editor-preview-wrapper) {
-  padding: 0 0 0 10px;
+  padding: 0 10px 0 10px;
 }
 
 .md {
