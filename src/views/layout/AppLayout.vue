@@ -1,10 +1,16 @@
 <script lang="ts" setup>
 import { useAppBarProvide } from '@/composable/useAppBar'
 import { useAccessToken } from '@/composable/useAccessToken'
-import { useGetNameQuery } from '@/composable/useAuthService'
+import { useGetNameLazyQuery } from '@/composable/useAuthService'
 import { useAppLoadingProvide } from '@/composable/useAppLoading'
 import AppBarLeft from '@/views/layout/AppBarLeft.vue'
 import AppBarRight from '@/views/layout/AppBarRight.vue'
+import useEnv from '@/composable/useEnv'
+import { useRouter } from 'vue-router'
+
+// Base
+const { title, ignoreCheckPaths } = useEnv()
+const router = useRouter()
 
 // Api Service
 
@@ -18,7 +24,11 @@ appLoadingCtx.on()
 // Check Login
 const token = useAccessToken()
 
-const { onResult, onError } = useGetNameQuery({
+const {
+  onResult,
+  onError,
+  load: checkLogin,
+} = useGetNameLazyQuery({
   clientId: 'auth',
   fetchPolicy: 'network-only',
 })
@@ -32,6 +42,14 @@ onResult((param) => {
 
 onError(() => {
   token.del()
+})
+
+router.beforeResolve((to) => {
+  if (ignoreCheckPaths.findIndex((value: string) => value === to.path) != -1) {
+    appLoadingCtx.off()
+  } else {
+    checkLogin()
+  }
 })
 </script>
 
